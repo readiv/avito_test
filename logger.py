@@ -17,7 +17,7 @@ def get_stream_handler():
 def get_logger(name, file_name:str = "libmatrix.log"):
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
-    logger.addHandler(get_file_handler(file_name))
+    # logger.addHandler(get_file_handler(file_name))
     logger.addHandler(get_stream_handler())
     return logger
  
