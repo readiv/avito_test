@@ -1,4 +1,4 @@
-import aiohttp
+import httpx
 import asyncio
 import logger
 
@@ -55,11 +55,11 @@ async def get_matrix(url: str) -> list[int]:
         При какой либо ошибке возвращает пустой список и пишет сообщение в лог
     """
     try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, timeout=5) as response:
-                if response.status != 200:
-                    raise ExceptionMatrixNotCode200(f"error: response status not ok. url:{url} status:{response.status}")
-                return matrix_str2int(await response.text())
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+            if response.status_code != 200:
+                raise ExceptionMatrixNotCode200(f"error: response status not ok. url:{url} status:{response.status_code}")
+        return matrix_str2int(response.text)
     except Exception as e:
         log.error(e)
         return []
@@ -67,14 +67,14 @@ async def get_matrix(url: str) -> list[int]:
 if __name__ == '__main__':
 
     loop = asyncio.get_event_loop()
-    coroutines = [get_matrix("https://raw.githubusercontent.com/readiv/ls1/master/matrix1.txt"),
+    coroutines = [get_matrix("https://raw.githubusercontent.com/readiv/ls1/master/matrix.txt"),
                   get_matrix("https://raw.githubusercontent.com/readiv/ls1/master/matrix2.txt"),
                   get_matrix("https://raw.githubusercontent.com/readiv/ls1/master/matrix3.txt"),
                   get_matrix("https://raw.githubusercontent.com/readiv/ls1/master/matrix4.txt"),
                   get_matrix("https://raw.githubusercontent.com/readiv/ls1/master/matrix5.txt"),
                   get_matrix("https://raw.githubusercontent.com/avito-tech/python-trainee-assignment/main/matrix.txt")]
 
-    list_matrix = loop.run_until_complete(asyncio.gather(*coroutines))
-    for matrix in list_matrix:
+    list_matrix = loop.run_until_complete(asyncio.gather(*coroutines))  # На новых версиях python вариант с asyncio.run почему то не работает
+    for matrix in list_matrix:  # Хотя на старых вроде работает
         log.info(matrix)
         pass
