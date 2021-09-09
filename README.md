@@ -9,7 +9,7 @@ https://github.com/avito-tech/python-trainee-assignment/blob/main/README.md
 
 ## Реализация
 
-В окончательном варианте для загрузки матрицы была применена библиотека httpx. C aiohttp не сложилось, так как заставить корректно работать в ней assert asyncio.run(get_matrix(SOURCE_URL)) так и не удалось :-( При http запросах было всё норм, а вот на https всё крашилось. Проблема по видимому растеёт вот отсюда:  
+В окончательном варианте для загрузки матрицы была применена библиотека httpx. C aiohttp не сложилось, так как заставить корректно работать в ней assert asyncio.run(get_matrix(SOURCE_URL)) так и не удалось :-( При http запросах было всё норм, а вот на https всё крашилось. Проблема по видимому растёт вот отсюда:  
 
 https://github.com/aio-libs/aiohttp/issues/1925
 
